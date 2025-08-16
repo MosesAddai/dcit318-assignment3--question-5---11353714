@@ -4,25 +4,25 @@ class Program
 {
     static void Main(string[] args)
     {
-        // Create a logger for InventoryItem and specify file path
-        var logger = new InventoryLogger<InventoryItem>("inventory.json");
+        string filePath = "inventory.json";
 
-        // Load existing inventory from file (if any)
-        logger.LoadFromFile();
+        // Step 1: Create an instance of InventoryApp
+        InventoryApp app = new InventoryApp(filePath);
 
-        // Add some new items
-        logger.Add(new InventoryItem(1, "Apple", 50, DateTime.Now));
-        logger.Add(new InventoryItem(2, "Orange", 30, DateTime.Now));
-        logger.Add(new InventoryItem(3, "Banana", 20, DateTime.Now));
+        // Step 2: Seed sample data
+        app.SeedSampleData();
 
-        // Save inventory to file
-        logger.SaveToFile();
+        // Step 3: Save data to disk
+        app.SaveData();
+        Console.WriteLine("Data seeded and saved successfully.\n");
 
-        // Display all items in console
-        Console.WriteLine("Current Inventory:");
-        foreach (var item in logger.GetAll())
-        {
-            Console.WriteLine($"{item.Id}: {item.Name}, Qty: {item.Quantity}, Added: {item.DateAdded}");
-        }
+        // Step 4: Clear memory to simulate a new session
+        app = new InventoryApp(filePath);
+
+        // Step 5: Load data from file
+        app.LoadData();
+
+        // Step 6: Print all items to confirm recovery
+        app.PrintAllItems();
     }
 }
